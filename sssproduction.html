@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.S.S Production</title>
+<style>
+  /* ============================================
+     BUTTON LINKS — CHANGE THESE TWO URLs ONLY
+     ============================================ */
+  :root {
+    --youtube-link: "https://www.youtube.com/@YourChannelHere";
+    --games-link:   "https://your-games-link-here.com";
+  }
+  /* ============================================ */
+
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=IM+Fell+English+SC&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #0a0a0a;
+    color: #e8e0d0;
+    font-family: 'Bebas Neue', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ---------- SCANLINE OVERLAY ---------- */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ---------- GRAIN TEXTURE ---------- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 998;
+    opacity: 0.4;
+  }
+
+  /* ---------- ANIMATED BG STRIPES ---------- */
+  .bg-stripes {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(180,0,0,0.03) 40px,
+      rgba(180,0,0,0.03) 80px
+    );
+    animation: stripeMove 20s linear infinite;
+    z-index: 0;
+  }
+
+  @keyframes stripeMove {
+    from { background-position: 0 0; }
+    to   { background-position: 200px 200px; }
+  }
+
+  /* ---------- HERO SECTION ---------- */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 40px 20px;
+    border-bottom: 3px solid #cc0000;
+  }
+
+  /* ---------- PROPAGANDA BANNER TOP ---------- */
+  .banner-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: #cc0000;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #fff;
+    font-weight: 700;
+    animation: marquee 20s linear infinite;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .banner-top span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 20s linear infinite;
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ---------- LOGO ---------- */
+  .logo-wrap {
+    margin-top: 40px;
+    animation: fadeDown 1s ease forwards;
+  }
+
+  .logo-wrap img {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(204,0,0,0.6));
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(204,0,0,0.5)); }
+    50%       { filter: drop-shadow(0 0 35px rgba(204,0,0,0.9)); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- TITLE ---------- */
+  .main-title {
+    margin-top: 28px;
+    text-align: center;
+    animation: fadeUp 1.2s ease 0.3s both;
+  }
+
+  .main-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #cc0000;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .main-title .subtitle {
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: #888;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  /* ---------- DECORATIVE DIVIDER ---------- */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0;
+    animation: fadeUp 1.2s ease 0.5s both;
+  }
+
+  .divider-line {
+    flex: 1;
+    max-width: 120px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #cc0000);
+  }
+
+  .divider-line.right {
+    background: linear-gradient(to left, transparent, #cc0000);
+  }
+
+  .divider-star {
+    color: #cc0000;
+    font-size: 28px;
+    animation: rotateStar 8s linear infinite;
+  }
+
+  @keyframes rotateStar {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 380px;
+    animation: fadeUp 1.2s ease 0.7s both;
+  }
+
+  .soviet-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 18px 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: #0a0a0a;
+    border: 2px solid #cc0000;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .soviet-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #cc0000;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+
+  .soviet-btn:hover::before { transform: translateX(0); }
+
+  .soviet-btn:hover {
+    border-color: #ff2222;
+    color: #fff;
+  }
+
+  .soviet-btn:active { transform: scale(0.97); }
+
+  .soviet-btn svg,
+  .soviet-btn span { position: relative; z-index: 1; }
+
+  .soviet-btn svg {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  /* ---------- CORNER ORNAMENTS ---------- */
+  .corners {
+    position: absolute;
+    inset: 16px;
+    pointer-events: none;
+  }
+
+  .corners::before,
+  .corners::after,
+  .corners .c3,
+  .corners .c4 {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #cc0000;
+    border-style: solid;
+    opacity: 0.5;
+  }
+
+  .corners::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+  .corners::after  { top: 0; right: 0; border-width: 2px 2px 0 0; }
+  .corners .c3     { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+  .corners .c4     { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- SCROLL SECTIONS ---------- */
+  .section {
+    position: relative;
+    z-index: 10;
+    padding: 80px 20px;
+    border-bottom: 2px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: #cc0000;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: #e8e0d0;
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .section p {
+    max-width: 560px;
+    text-align: center;
+    color: #888;
+    font-size: 15px;
+    line-height: 1.8;
+    letter-spacing: 1px;
+  }
+
+  /* ---------- PROPAGANDA CARDS ---------- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 40px;
+  }
+
+  .prop-card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    padding: 32px 20px;
+    text-align: center;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .prop-card:hover {
+    border-color: #cc0000;
+    background: #150000;
+  }
+
+  .prop-card .icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .prop-card h3 {
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #cc0000;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .prop-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    position: relative;
+    z-index: 10;
+    background: #cc0000;
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+  }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- PROGRESS BAR ---------- */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: #cc0000;
+    z-index: 1000;
+    width: 0%;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(204,0,0,0.8);
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="progress"></div>
+<div class="bg-stripes"></div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="corners"><span class="c3"></span><span class="c4"></span></div>
+
+  <div class="banner-top">
+    <span>★ S.S.S PRODUCTION ★ OFFICIAL SITE ★ YOUTUBE ★ GAMES ★ CONTENT ★ S.S.S PRODUCTION ★ OFFICIAL SITE ★ YOUTUBE ★ GAMES ★ CONTENT ★</span>
+  </div>
+
+  <div class="main-title">
+    <h1>S.S.S Production</h1>
+    <p class="subtitle">Content · Games · Creation</p>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-star">★</div>
+    <div class="divider-line right"></div>
+  </div>
+
+  <!-- ============================================
+       CHANGE YOUR LINKS BELOW
+       Replace the href values with your actual URLs
+       ============================================ -->
+  <div class="btn-group">
+
+    <a class="soviet-btn"
+       href="https://www.youtube.com/@YourChannelHere"
+       id="youtube-btn"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+      </svg>
+      <span>YouTube Channel</span>
+    </a>
+
+    <a class="soviet-btn"
+       href="https://your-games-link-here.com"
+       id="games-btn"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="6" width="20" height="12" rx="3"/>
+        <path d="M6 12h4M8 10v4M15 11h.01M17 13h.01"/>
+      </svg>
+      <span>My Games</span>
+    </a>
+
+  </div>
+  <!-- ============================================
+       END OF LINK SECTION
+       ============================================ -->
+
+</section>
+
+<!-- ========== ABOUT SECTION ========== -->
+<section class="section">
+  <p class="section-label">Manifesto</p>
+  <h2 class="reveal">For the People. By the People.</h2>
+  <p class="reveal">S.S.S Production creates content that unites — from gameplay to creative works, every release is crafted with purpose and passion.</p>
+
+  <div class="card-grid">
+    <div class="prop-card reveal">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#cc0000" stroke-width="1.5" width="36" height="36"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+      </div>
+      <h3>Video</h3>
+      <p>Cinematic content delivered straight to your screen.</p>
+    </div>
+    <div class="prop-card reveal">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#cc0000" stroke-width="1.5" width="36" height="36"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4M8 10v4M15 11h.01M17 13h.01"/></svg>
+      </div>
+      <h3>Games</h3>
+      <p>Playable experiences built with dedication.</p>
+    </div>
+    <div class="prop-card reveal">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#cc0000" stroke-width="1.5" width="36" height="36"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <h3>Production</h3>
+      <p>Quality craftsmanship in every release.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA SECTION ========== -->
+<section class="section">
+  <p class="section-label">Join the Movement</p>
+  <h2 class="reveal">Support S.S.S Production</h2>
+  <p class="reveal">Subscribe. Play. Follow. Every view, every click strengthens the collective.</p>
+
+
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  ★ S.S.S Production — All Rights Reserved ★
+</footer>
+
+<script>
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progress.style.width = pct + '%';
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
